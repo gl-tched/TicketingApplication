@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TicketingApplication</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_activity_add_ticket">AddTicketActivity</string>
+</resources>
