@@ -17,7 +17,7 @@
         android:adjustViewBounds="true"
         android:background="#52a2ba"
         android:scaleType="fitCenter"
-        android:src="@drawable/Logo" />
+        android:src="@drawable/logo" />
 
     <EditText
         android:id="@+id/usernameField"
@@ -50,6 +50,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
         android:backgroundTint="#52a2ba"
+        android:onClick="attemptLogin"
         android:text="Login"
         android:textColor="#ffffff" />
 

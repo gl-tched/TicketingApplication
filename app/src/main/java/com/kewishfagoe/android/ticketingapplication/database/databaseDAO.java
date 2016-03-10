@@ -98,7 +98,7 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         userAdminValues.put(TABLE_USERS_USERNAME, "sadmin");
         userAdminValues.put(TABLE_USERS_PASSWORD, "9f5ba68f21489544d985797d58847b65e9a22c4981aeccafc96b351e84df254c");
         userAdminValues.put(TABLE_USERS_LEVEL, 1);
-        insertUser(TABLE_USERS_NAME, userValues1);
+        insertUser(TABLE_USERS_NAME, userAdminValues);
 
         ContentValues ticketValues = new ContentValues();
         ticketValues.put(TABLE_TICKETS_CREATION_DATE, 2015 - 01 - 18);
