@@ -100,14 +100,19 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         userAdminValues.put(TABLE_USERS_LEVEL, 1);
         insertUser(TABLE_USERS_NAME, userAdminValues);
 
-        ContentValues ticketValues = new ContentValues();
-        ticketValues.put(TABLE_TICKETS_CREATION_DATE, 2015 - 01 - 18);
-        ticketValues.put(TABLE_TICKETS_TYPE_PROBLEEM, "SOFTWARE");
-        ticketValues.put(TABLE_TICKETS_TITLE, "MS Word Probleem");
-        ticketValues.put(TABLE_TICKETS_DESCRIPTION, "MS Word gaat niet open. Geeft x50326 error bij opstart.");
-        ticketValues.put(TABLE_TICKETS_REPARATIE_DATUM, 2015 - 01 - 22);
-        ticketValues.put(TABLE_TICKETS_STATUS, "CLOSED");
-        insertTicket(TABLE_TICKETS_NAME, ticketValues);
+        ContentValues ticketValues1 = new ContentValues();
+        ticketValues1.put(TABLE_TICKETS_CREATION_DATE, 2015 - 01 - 18);
+        ticketValues1.put(TABLE_TICKETS_TYPE_PROBLEEM, "SOFTWARE");
+        ticketValues1.put(TABLE_TICKETS_TITLE, "MS Word Probleem");
+        ticketValues1.put(TABLE_TICKETS_DESCRIPTION, "MS Word gaat niet open. Geeft x50326 error bij opstart.");
+        ticketValues1.put(TABLE_TICKETS_REPARATIE_DATUM, 2015 - 01 - 22);
+        ticketValues1.put(TABLE_TICKETS_STATUS, "CLOSED");
+        insertTicket(TABLE_TICKETS_NAME, ticketValues1);
+
+        ContentValues userTicketValues1 = new ContentValues();
+        userTicketValues1.put(TABLE_USERTICKETS_TID, 1);
+        userTicketValues1.put(TABLE_USERTICKETS_UID, 1);
+        insertUserTicket(TABLE_USERTICKETS_NAME, userTicketValues1);
 
     }
 
@@ -128,6 +133,12 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         return rowId;
     }
 
-
+    public long insertUserTicket(String name, ContentValues userTicket) {
+        SQLiteDatabase db = getWritableDatabase();
+        long rowId = db.insert(TABLE_TICKETS_NAME, null, userTicket);
+        db.close();
+        //return the row ID of the newly inserted row, or -1 if an error occurred
+        return rowId;
+    }
 
 }
