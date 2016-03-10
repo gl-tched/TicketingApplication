@@ -1,5 +1,6 @@
 package com.kewishfagoe.android.ticketingapplication.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -18,7 +19,7 @@ public class databaseDAO extends SQLiteOpenHelper {
     private static final String TABLE_USERS_FNAAM = "fnaam";
     private static final String TABLE_USERS_VNAAM = "vnaam";
     private static final String TABLE_USERS_ADRES = "adres";
-    private static final String TABLE_USERS_TELEFOON = "teplefoon";
+    private static final String TABLE_USERS_TELEFOON = "telefoon";
     private static final String TABLE_USERS_EMAIL = "email";
     private static final String TABLE_USERS_USERNAME = "username";
     private static final String TABLE_USERS_PASSWORD = "password";
@@ -40,33 +41,93 @@ public class databaseDAO extends SQLiteOpenHelper {
 
 
 //Create Table users Script
-private static final String CREATE_TABLE_USERS = String.format(
+private static final String SQL_CREATE_TABLE_USERS = String.format(
         "create table if not exists %s(%s INTEGER NOT NULL CHECK(user_id > 0), %s NUMERIC NOT NULL , %s TEXT NOT NULL UNIQUE, %s TEXT NOT NULL UNIQUE, %s TEXT NOT NULL UNIQUE, %s NUMERIC NOT NULL UNIQUE, %s TEXT NOT NULL, %s TEXT NOT NULL UNIQUE, %s TEXT NOT NULL, %s INTEGER NOT NULL CHECK(user_level = 1 OR user_level = 2),PRIMARY KEY(user_id));",
         TABLE_USERS_NAME, TABLE_USERS_ID, TABLE_USERS_REG_DATE, TABLE_USERS_FNAAM, TABLE_USERS_VNAAM, TABLE_USERS_ADRES, TABLE_USERS_TELEFOON, TABLE_USERS_EMAIL, TABLE_USERS_USERNAME, TABLE_USERS_PASSWORD, TABLE_USERS_LEVEL);
 
 //Create  Table tickets
-private static final String CREATE_TABLE_TICKETS = String.format(
+private static final String SQL_CREATE_TABLE_TICKETS = String.format(
         "create table if not exists %s(%s INTEGER NOT NULL CHECK(ticket_id > 0), %s NUMERIC NOT NULL , %s TEXT CHECK(type_probleem = 'SOFTWARE' OR type_probleem = 'HARDWARE'), %s TEXT, %s TEXT NOT NULL, %s NUMERIC, %s TEXT NOT NULL CHECK(status = 'OPEN' OR status = 'IN PROGRESS' OR status = 'CLOSED'),PRIMARY KEY(ticket_id));",
         TABLE_TICKETS_NAME, TABLE_TICKETS_ID, TABLE_TICKETS_CREATION_DATE, TABLE_TICKETS_TYPE_PROBLEEM, TABLE_TICKETS_TITLE, TABLE_TICKETS_DESCRIPTION, TABLE_TICKETS_REPARATIE_DATUM, TABLE_TICKETS_STATUS);
 
 //Create Table user_tickets
-private static final String CREATE_TABLE_USERTICKETS = String.format(
+private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         "create table if not exists %s(%s INTEGER NOT NULL CHECK(user_tickets_id > 0), %s INTEGER NOT NULL , %s INTEGER NOT NULL, PRIMARY KEY(user_tickets_id), FOREIGN KEY(user_id) REFERENCES users(user_id), FOREIGN KEY(ticket_id) REFERENCES tickets(ticket_id));",
         TABLE_USERTICKETS_NAME, TABLE_USERTICKETS_ID, TABLE_USERTICKETS_UID, TABLE_USERTICKETS_TID);
 
+
     public databaseDAO(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        insertDefaultData();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(SQL_CREATE_TABLE_USERS);
+        db.execSQL(SQL_CREATE_TABLE_TICKETS);
+        db.execSQL(SQL_CREATE_TABLE_USERTICKETS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
+
+    private void insertDefaultData() {
+
+        ContentValues userValues1 = new ContentValues();
+        userValues1.put(TABLE_USERS_REG_DATE, 2015 - 01 - 18);
+        userValues1.put(TABLE_USERS_FNAAM, "Bollinger");
+        userValues1.put(TABLE_USERS_VNAAM, "Joyce");
+        userValues1.put(TABLE_USERS_ADRES, "Windmolen 181");
+        userValues1.put(TABLE_USERS_TELEFOON, 8693447);
+        userValues1.put(TABLE_USERS_EMAIL, "JoyceJBollinger@inbound.plus");
+        userValues1.put(TABLE_USERS_USERNAME, "joyce");
+        userValues1.put(TABLE_USERS_PASSWORD, "5dafa4f662d29c5f870ba55a880dc5089226721f183543cdfaec0c21ccd8d63c");
+        userValues1.put(TABLE_USERS_LEVEL, 2);
+        insertUser(TABLE_USERS_NAME, userValues1);
+
+        ContentValues userAdminValues = new ContentValues();
+        userAdminValues.put(TABLE_USERS_REG_DATE, 2015 - 01 - 18);
+        userAdminValues.put(TABLE_USERS_FNAAM, "Super");
+        userAdminValues.put(TABLE_USERS_VNAAM, "Admin");
+        userAdminValues.put(TABLE_USERS_ADRES, "Column St. 123");
+        userAdminValues.put(TABLE_USERS_TELEFOON, 8932618);
+        userAdminValues.put(TABLE_USERS_EMAIL, "AdminSuper@inbound.plus");
+        userAdminValues.put(TABLE_USERS_USERNAME, "sadmin");
+        userAdminValues.put(TABLE_USERS_PASSWORD, "9f5ba68f21489544d985797d58847b65e9a22c4981aeccafc96b351e84df254c");
+        userAdminValues.put(TABLE_USERS_LEVEL, 1);
+        insertUser(TABLE_USERS_NAME, userValues1);
+
+        ContentValues ticketValues = new ContentValues();
+        ticketValues.put(TABLE_TICKETS_CREATION_DATE, 2015 - 01 - 18);
+        ticketValues.put(TABLE_TICKETS_TYPE_PROBLEEM, "SOFTWARE");
+        ticketValues.put(TABLE_TICKETS_TITLE, "MS Word Probleem");
+        ticketValues.put(TABLE_TICKETS_DESCRIPTION, "MS Word gaat niet open. Geeft x50326 error bij opstart.");
+        ticketValues.put(TABLE_TICKETS_REPARATIE_DATUM, 2015 - 01 - 22);
+        ticketValues.put(TABLE_TICKETS_STATUS, "CLOSED");
+        insertTicket(TABLE_TICKETS_NAME, ticketValues);
+
+    }
+
+
+    public long insertUser(String name, ContentValues user) {
+        SQLiteDatabase db = getWritableDatabase();
+        long rowId = db.insert(TABLE_USERS_NAME, null, user);
+        db.close();
+        //return the row ID of the newly inserted row, or -1 if an error occurred
+        return rowId;
+    }
+
+    public long insertTicket(String name, ContentValues ticket) {
+        SQLiteDatabase db = getWritableDatabase();
+        long rowId = db.insert(TABLE_TICKETS_NAME, null, ticket);
+        db.close();
+        //return the row ID of the newly inserted row, or -1 if an error occurred
+        return rowId;
+    }
+
 
 
 }
