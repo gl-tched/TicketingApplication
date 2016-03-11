@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.kewishfagoe.android.ticketingapplication.database.DatabaseDAO;
 import com.kewishfagoe.android.ticketingapplication.database.User;
-import com.kewishfagoe.android.ticketingapplication.database.databaseDAO;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         EditText password = (EditText) findViewById(R.id.passwordField);
         String pswVal = String.valueOf(password.getText());
 
-        databaseDAO db = new databaseDAO(this);
+        DatabaseDAO db = new DatabaseDAO(this);
         User user = db.findUserCreds(usrVal);
 
         if (user != null) {

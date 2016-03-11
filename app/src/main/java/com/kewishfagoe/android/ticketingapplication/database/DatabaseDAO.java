@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by kewis on 3/9/2016.
  */
-public class databaseDAO extends SQLiteOpenHelper {
+public class DatabaseDAO extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "ticket_db.db";
     private static final int DB_VERSION = 1;
@@ -57,7 +57,7 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         TABLE_USERTICKETS_NAME, TABLE_USERTICKETS_ID, TABLE_USERTICKETS_UID, TABLE_USERTICKETS_TID);
 
 
-    public databaseDAO(Context context) {
+    public DatabaseDAO(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         insertDefaultData();
     }
