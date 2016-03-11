@@ -6,6 +6,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.kewishfagoe.android.ticketingapplication.database.User;
+import com.kewishfagoe.android.ticketingapplication.database.databaseDAO;
+
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +55,29 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void attemptLogin(View view) {
+    public void attemptLogin(View view) throws NoSuchAlgorithmException {
+        EditText username = (EditText) findViewById(R.id.usernameField);
+        String usrVal = String.valueOf(username.getText());
 
+        EditText password = (EditText) findViewById(R.id.passwordField);
+        String pswVal = String.valueOf(password.getText());
+
+        databaseDAO db = new databaseDAO(this);
+        User user = db.findUserCreds(usrVal);
+
+        if (user != null) {
+            boolean isPswValid = user.comparePassword(pswVal);
+
+            if (isPswValid) {
+                // login success
+                // transition to dashboard
+                Toast.makeText(this, "Login success", Toast.LENGTH_SHORT).show();
+            } else {
+                // login failed
+                Toast.makeText(this, "Incorrect username/password", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Incorrect username/password", Toast.LENGTH_SHORT).show();
+        }
     }
 }

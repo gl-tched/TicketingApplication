@@ -15,9 +15,28 @@ public class User {
     private String adres;
     private int telefoon;
     private String email;
-    private String usernaam;
+    private String username;
     private String password;
     private int userLevel;
+
+    public User(String username, String password, int userLevel) {
+        this.username = username;
+        this.password = password;
+        this.userLevel = userLevel;
+    }
+
+    public User(int user_id, Date regDatum, String f_naam, String v_naam, String adres, int telefoon, String email, String username, String password, int userLevel) {
+        this.user_id = user_id;
+        this.regDatum = regDatum;
+        this.f_naam = f_naam;
+        this.v_naam = v_naam;
+        this.adres = adres;
+        this.telefoon = telefoon;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.userLevel = userLevel;
+    }
 
     public static final String getPasswordHash(final String s) throws NoSuchAlgorithmException {
         final String SHA256 = "SHA-256";
@@ -37,6 +56,10 @@ public class User {
         }
 
         return hexString.toString();
+    }
+
+    public boolean comparePassword(String password) throws NoSuchAlgorithmException {
+        return User.getPasswordHash(password).equals(this.password);
     }
 
     public int getUser_id() {
@@ -95,12 +118,12 @@ public class User {
         this.email = email;
     }
 
-    public String getUsernaam() {
-        return usernaam;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsernaam(String usernaam) {
-        this.usernaam = usernaam;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -117,9 +140,5 @@ public class User {
 
     public void setUserLevel(int userLevel) {
         this.userLevel = userLevel;
-    }
-
-    public boolean comparePassword(String password) throws NoSuchAlgorithmException {
-        return User.getPasswordHash(password).equals(this.password);
     }
 }

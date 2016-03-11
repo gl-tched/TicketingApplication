@@ -2,6 +2,7 @@ package com.kewishfagoe.android.ticketingapplication.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -123,6 +124,22 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         db.close();
         //return the row ID of the newly inserted row, or -1 if an error occurred
         return rowId;
+    }
+
+    public User findUserCreds(String username) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        String whereClause = String.format("%s = ?", TABLE_USERS_USERNAME);
+        String[] whereArgs = {username};
+        cursor = db.query(TABLE_USERS_NAME, new String[]{"username", "password", "user_level"}, whereClause, whereArgs, null, null, null);
+
+        User user = null;
+        if (cursor.moveToNext()) {
+            user = new User(cursor.getString(0), cursor.getString(1), cursor.getInt(2));
+        }
+
+        db.close();
+        return user;
     }
 
     public long insertTicket(String name, ContentValues ticket) {
