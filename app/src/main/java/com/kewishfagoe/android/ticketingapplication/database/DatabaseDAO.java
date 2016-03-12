@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by kewis on 3/9/2016.
  */
@@ -108,7 +110,7 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         ticketValues1.put(TABLE_TICKETS_DESCRIPTION, "MS Word gaat niet open. Geeft x50326 error bij opstart.");
         ticketValues1.put(TABLE_TICKETS_REPARATIE_DATUM, 2015 - 01 - 22);
         ticketValues1.put(TABLE_TICKETS_STATUS, "CLOSED");
-        insertTicket(TABLE_TICKETS_NAME, ticketValues1);
+        insertTicket(ticketValues1);
 
         ContentValues userTicketValues1 = new ContentValues();
         userTicketValues1.put(TABLE_USERTICKETS_TID, 1);
@@ -131,18 +133,18 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         Cursor cursor = null;
         String whereClause = String.format("%s = ?", TABLE_USERS_USERNAME);
         String[] whereArgs = {username};
-        cursor = db.query(TABLE_USERS_NAME, new String[]{"username", "password", "user_level"}, whereClause, whereArgs, null, null, null);
+        cursor = db.query(TABLE_USERS_NAME, new String[]{"user_id", "fnaam", "vnaam", "username", "password", "user_level"}, whereClause, whereArgs, null, null, null);
 
         User user = null;
         if (cursor.moveToNext()) {
-            user = new User(cursor.getString(0), cursor.getString(1), cursor.getInt(2));
+            user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getInt(5));
         }
 
         db.close();
         return user;
     }
 
-    public long insertTicket(String name, ContentValues ticket) {
+    public long insertTicket(ContentValues ticket) {
         SQLiteDatabase db = getWritableDatabase();
         long rowId = db.insert(TABLE_TICKETS_NAME, null, ticket);
         db.close();
@@ -150,9 +152,37 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         return rowId;
     }
 
+    public ArrayList<Ticket> findTickets(int user_id, int user_level) {
+        ArrayList<Ticket> tickets = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+
+        String sql = "";
+        sql += "select tickets.title, tickets.status from user_tickets ";
+        sql += "join tickets on user_tickets.ticket_id = tickets.ticket_id";
+        if (user_level != 1) {
+            sql += " where user_id = ?";
+            cursor = db.rawQuery(sql, new String[]{String.valueOf(user_id)});
+        } else {
+            cursor = db.rawQuery(sql, null);
+        }
+
+        if (cursor.getCount() > 0) tickets = new ArrayList<>();
+        Ticket ticket = null;
+        while (cursor.moveToNext()) {
+            ticket = new Ticket(cursor.getString(0), cursor.getString(1));
+            tickets.add(ticket);
+        }
+
+        db.close();
+
+        return tickets;
+    }
+
     public long insertUserTicket(String name, ContentValues userTicket) {
         SQLiteDatabase db = getWritableDatabase();
-        long rowId = db.insert(TABLE_TICKETS_NAME, null, userTicket);
+        long rowId = db.insert(TABLE_USERTICKETS_NAME, null, userTicket);
         db.close();
         //return the row ID of the newly inserted row, or -1 if an error occurred
         return rowId;

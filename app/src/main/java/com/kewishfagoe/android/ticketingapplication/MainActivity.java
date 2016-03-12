@@ -1,5 +1,6 @@
 package com.kewishfagoe.android.ticketingapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -71,7 +72,16 @@ public class MainActivity extends AppCompatActivity {
             if (isPswValid) {
                 // login success
                 // transition to dashboard
-                Toast.makeText(this, "Login success", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "Login success", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(this, DashboardActivity.class);
+                intent.putExtra("user_id", user.getUser_id());
+                intent.putExtra("f_naam", user.getF_naam());
+                intent.putExtra("v_naam", user.getV_naam());
+                intent.putExtra("username", user.getUsername());
+                intent.putExtra("password", user.getPassword());
+                intent.putExtra("user_level", user.getUserLevel());
+                startActivity(intent);
             } else {
                 // login failed
                 Toast.makeText(this, "Incorrect username/password", Toast.LENGTH_SHORT).show();

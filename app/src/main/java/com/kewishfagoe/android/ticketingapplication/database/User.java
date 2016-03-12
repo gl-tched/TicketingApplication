@@ -19,7 +19,10 @@ public class User {
     private String password;
     private int userLevel;
 
-    public User(String username, String password, int userLevel) {
+    public User(int user_id, String f_naam, String v_naam, String username, String password, int userLevel) {
+        this.user_id = user_id;
+        this.f_naam = f_naam;
+        this.v_naam = v_naam;
         this.username = username;
         this.password = password;
         this.userLevel = userLevel;

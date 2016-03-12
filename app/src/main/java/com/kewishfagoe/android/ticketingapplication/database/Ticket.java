@@ -14,6 +14,19 @@ public class Ticket {
     private Date reparatie_datum;
     private String status;
 
+    public Ticket(String title, String status) {
+        this.title = title;
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "title='" + title + '\'' + "\n" +
+                "status='" + status + '\'' +
+                '}';
+    }
+
     public int getTicket_id() {
         return ticket_id;
     }
