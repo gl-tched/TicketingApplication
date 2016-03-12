@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.kewishfagoe.android.ticketingapplication.database.DatabaseDAO;
 import com.kewishfagoe.android.ticketingapplication.database.Ticket;
@@ -43,7 +42,7 @@ public class DashboardActivity extends AppCompatActivity {
         message += "psw:" + extras.getString("password") + "\n";
         message += "user_level:" + extras.getInt("user_level");
 
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
         DatabaseDAO db = new DatabaseDAO(this);
         ArrayList<Ticket> tickets = db.findTickets(extras.getInt("user_id"), extras.getInt("user_level"));
@@ -52,20 +51,19 @@ public class DashboardActivity extends AppCompatActivity {
             ListView listView = (ListView) findViewById(R.id.listView);
             ListIterator<Ticket> it = tickets.listIterator();
 
-            ArrayAdapter<Ticket> adapter = new ArrayAdapter<Ticket>(this, android.R.layout.simple_selectable_list_item, tickets);
+            ArrayList<String> helperList = new ArrayList<>();
+            ArrayList<Ticket> uniqueTickets = new ArrayList<>();
 
-            adapter.clear();
-            adapter.addAll(tickets);
+            for (Ticket ticket : tickets) {
+                if (!helperList.contains(ticket.toString())) {
+                    helperList.add(ticket.toString());
+                    uniqueTickets.add(ticket);
+                }
+            }
+
+            ArrayAdapter<Ticket> adapter = new ArrayAdapter<Ticket>(this, android.R.layout.simple_selectable_list_item, uniqueTickets);
+
             listView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-
-            //adapter.clear();
-            //adapter.notifyDataSetChanged();
-//            Ticket ticket = null;
-//            while (it.hasNext()) {
-//                ticket = it.next();
-//
-//            }
         }
     }
 
