@@ -1,11 +1,13 @@
 package com.kewishfagoe.android.ticketingapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -71,9 +73,23 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             }
 
-            ArrayAdapter<Ticket> adapter = new ArrayAdapter<Ticket>(this, android.R.layout.simple_selectable_list_item, uniqueTickets);
+            final ArrayAdapter<Ticket> adapter = new ArrayAdapter<Ticket>(this, android.R.layout.simple_selectable_list_item, uniqueTickets);
 
             listView.setAdapter(adapter);
+
+            final Context $this = this;
+            final int userLevel = extras.getInt("user_level");
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent($this, TicketDetailsActivity.class);
+                    intent.putExtra("listitem pos", position);
+                    intent.putExtra("adapteritem pos", adapter.getPosition(adapter.getItem(position)));
+                    intent.putExtra("ticket_id", adapter.getItem(position).getTicket_id());
+                    intent.putExtra("user_level", userLevel);
+                    startActivity(intent);
+                }
+            });
         }
     }
 

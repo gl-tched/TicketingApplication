@@ -4,4 +4,14 @@
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_activity_add_ticket">AddTicketActivity</string>
+    <string name="title_activity_ticket_details">TicketDetailsActivity</string>
+    <string-array name="type">
+        <item>HARDWARE</item>
+        <item>SOFTWARE</item>
+    </string-array>
+    <string-array name="status">
+        <item>OPEN</item>
+        <item>IN PROGRESS</item>
+        <item>CLOSED</item>
+    </string-array>
 </resources>

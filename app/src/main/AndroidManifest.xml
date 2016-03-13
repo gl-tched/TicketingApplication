@@ -29,6 +29,10 @@
         <activity
             android:name=".AddTicketActivity"
             android:label="@string/title_activity_add_ticket"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TicketDetailsActivity"
+            android:label="@string/title_activity_ticket_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

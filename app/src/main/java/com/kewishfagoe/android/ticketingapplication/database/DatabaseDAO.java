@@ -176,7 +176,7 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
     private void insertDefaultData() {
 
         ContentValues userValues1 = new ContentValues();
-        userValues1.put(TABLE_USERS_REG_DATE, 2015 - 01 - 18);
+        userValues1.put(TABLE_USERS_REG_DATE, "2015 - 01 - 18");
         userValues1.put(TABLE_USERS_FNAAM, "Bollinger");
         userValues1.put(TABLE_USERS_VNAAM, "Joyce");
         userValues1.put(TABLE_USERS_ADRES, "Windmolen 181");
@@ -188,7 +188,7 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         insertUser(TABLE_USERS_NAME, userValues1);
 
         ContentValues userAdminValues = new ContentValues();
-        userAdminValues.put(TABLE_USERS_REG_DATE, 2015 - 01 - 18);
+        userAdminValues.put(TABLE_USERS_REG_DATE, "2015 - 01 - 18");
         userAdminValues.put(TABLE_USERS_FNAAM, "Super");
         userAdminValues.put(TABLE_USERS_VNAAM, "Admin");
         userAdminValues.put(TABLE_USERS_ADRES, "Column St. 123");
@@ -200,11 +200,11 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         insertUser(TABLE_USERS_NAME, userAdminValues);
 
         ContentValues ticketValues1 = new ContentValues();
-        ticketValues1.put(TABLE_TICKETS_CREATION_DATE, 2015 - 01 - 18);
+        ticketValues1.put(TABLE_TICKETS_CREATION_DATE, "2015 - 01 - 18");
         ticketValues1.put(TABLE_TICKETS_TYPE_PROBLEEM, "SOFTWARE");
         ticketValues1.put(TABLE_TICKETS_TITLE, "MS Word Probleem");
         ticketValues1.put(TABLE_TICKETS_DESCRIPTION, "MS Word gaat niet open. Geeft x50326 error bij opstart.");
-        ticketValues1.put(TABLE_TICKETS_REPARATIE_DATUM, 2015 - 01 - 22);
+        ticketValues1.put(TABLE_TICKETS_REPARATIE_DATUM, "2015 - 01 - 22");
         ticketValues1.put(TABLE_TICKETS_STATUS, "CLOSED");
         insertTicket(ticketValues1);
 
@@ -255,6 +255,16 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         return user;
     }
 
+    public int updateTicket(ContentValues contentValues, int ticket_id) {
+        int affectedRows = 0;
+        SQLiteDatabase db = getWritableDatabase();
+        String whereClause = String.format("%s = ?", TABLE_TICKETS_ID);
+        String[] whereArgs = {String.valueOf(ticket_id)};
+        affectedRows = db.update(TABLE_TICKETS_NAME, contentValues, whereClause, whereArgs);
+
+        return affectedRows;
+    }
+
     public long insertTicket(ContentValues ticket) {
         SQLiteDatabase db = getWritableDatabase();
         long rowId = db.insert(TABLE_TICKETS_NAME, null, ticket);
@@ -291,7 +301,7 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         Cursor cursor = null;
 
         String sql = "";
-        sql += "select tickets.title, tickets.status from user_tickets ";
+        sql += "select tickets.ticket_id, tickets.title, tickets.status from user_tickets ";
         sql += "join tickets on user_tickets.ticket_id = tickets.ticket_id";
         if (user_level != 1) {
             sql += " where user_id = ?";
@@ -303,13 +313,34 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         if (cursor.getCount() > 0) tickets = new ArrayList<>();
         Ticket ticket = null;
         while (cursor.moveToNext()) {
-            ticket = new Ticket(cursor.getString(0), cursor.getString(1));
+            ticket = new Ticket(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
             tickets.add(ticket);
         }
 
         db.close();
 
         return tickets;
+    }
+
+    public Ticket findTicket(int ticket_id) {
+        ArrayList<Ticket> tickets = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+
+        String sql = "";
+        sql += "select * from tickets";
+        sql += " where ticket_id = ?";
+        cursor = db.rawQuery(sql, new String[]{String.valueOf(ticket_id)});
+
+        Ticket ticket = null;
+        if (cursor.moveToNext()) {
+            ticket = new Ticket(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+        }
+
+        db.close();
+
+        return ticket;
     }
 
     public long insertUserTicket(String name, ContentValues userTicket) {
