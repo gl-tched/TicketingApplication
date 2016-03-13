@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kewishfagoe.android.ticketingapplication.database.DatabaseDAO;
 import com.kewishfagoe.android.ticketingapplication.database.Ticket;
@@ -42,13 +43,22 @@ public class DashboardActivity extends AppCompatActivity {
         message += "psw:" + extras.getString("password") + "\n";
         message += "user_level:" + extras.getInt("user_level");
 
-        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
         DatabaseDAO db = new DatabaseDAO(this);
+//        Cursor cursor = db.cursorFindTickets(extras.getInt("user_id"), extras.getInt("user_level"));
+//
+//        String[] fromFieldNames = new String[] {DatabaseDAO.getTableTicketsTitle(), DatabaseDAO.getTableTicketsStatus()};
+//        int[] toViewIDs = new int[] {R.id.itemTicketTitle, R.id.itemTicketStatus};
+//
+//        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.item_layout, cursor, fromFieldNames, toViewIDs, 0);
+//        ListView lv = (ListView) findViewById(R.id.listViewTickets);
+//        lv.setAdapter(cursorAdapter);
+
         ArrayList<Ticket> tickets = db.findTickets(extras.getInt("user_id"), extras.getInt("user_level"));
 
         if (tickets != null) {
-            ListView listView = (ListView) findViewById(R.id.listView);
+            ListView listView = (ListView) findViewById(R.id.listViewTickets);
             ListIterator<Ticket> it = tickets.listIterator();
 
             ArrayList<String> helperList = new ArrayList<>();

@@ -12,90 +12,131 @@
     tools:context="com.kewishfagoe.android.ticketingapplication.RegistrationActivity"
     tools:showIn="@layout/activity_registration">
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_lastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/lastNameField"
-        android:hint="Last Name"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/firstNameField"
-        android:layout_below="@+id/lastNameField"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:hint="First Name"
-        android:gravity="center"/>
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/phoneNumberField"
-        android:layout_below="@+id/firstNameField"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:hint="Phone Number"
-        android:gravity="center"/>
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addressField"
-        android:hint="Address"
-        android:layout_below="@+id/phoneNumberField"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         android:gravity="center"
-        android:layout_marginTop="10dp"/>
+        android:hint="Last Name" />
+    </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_firstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_lastName">
     <EditText
+        android:id="@+id/firstNameField"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/regUserNameField"
-        android:hint="Username"
-        android:layout_below="@+id/emailField"
-        android:layout_marginTop="10dp"
-        android:gravity="center"/>
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/regPasswordField"
-        android:hint="Password"
-        android:layout_below="@+id/regUserNameField"
+        android:layout_below="@+id/input_layout_lastName"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:hint="First Name" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_firstName">
+    <EditText
+        android:id="@+id/phoneNumberField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_firstName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:hint="Phone Number" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_phoneNumber">
+    <EditText
+        android:id="@+id/addressField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_phoneNumber"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:hint="Address" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_regUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_email">
+    <EditText
+        android:id="@+id/regUserNameField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_email"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:hint="Username" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_regPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_regUser">
+    <EditText
+        android:id="@+id/regPasswordField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_regUser"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Password"
+        android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Register"
         android:id="@+id/confirmRegisterButton"
-        android:layout_below="@+id/regPasswordField"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="#FFF"
-        />
-
-    <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/emailField"
-        android:layout_below="@id/addressField"
-        android:layout_marginTop="10dp"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/input_layout_regPass"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:onClick="attemptRegistration"
+        android:text="Register"
+        android:textColor="#FFF" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_address">
+    <EditText
+        android:id="@+id/emailField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_address"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:gravity="center"
         android:hint="Email Address"
-        android:gravity="center"/>
+        android:inputType="textEmailAddress" />
+    </android.support.design.widget.TextInputLayout>
 
 </RelativeLayout>

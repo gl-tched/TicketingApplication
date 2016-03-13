@@ -90,4 +90,9 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Incorrect username/password", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void goToRegistrationActivity(View view) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
 }

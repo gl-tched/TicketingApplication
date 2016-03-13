@@ -15,6 +15,7 @@ public class DatabaseDAO extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "ticket_db.db";
     private static final int DB_VERSION = 1;
+    private static final int USER_LEVEL = 2;
 
     private static final String TABLE_USERS_NAME = "users";
     private static final String TABLE_USERS_ID = "user_id";
@@ -64,6 +65,102 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         insertDefaultData();
     }
 
+    public static int getUserLevel() {
+        return USER_LEVEL;
+    }
+
+    public static String getTableUsersName() {
+        return TABLE_USERS_NAME;
+    }
+
+    public static String getTableUsersId() {
+        return TABLE_USERS_ID;
+    }
+
+    public static String getTableUsersRegDate() {
+        return TABLE_USERS_REG_DATE;
+    }
+
+    public static String getTableUsersFnaam() {
+        return TABLE_USERS_FNAAM;
+    }
+
+    public static String getTableUsersVnaam() {
+        return TABLE_USERS_VNAAM;
+    }
+
+    public static String getTableUsersAdres() {
+        return TABLE_USERS_ADRES;
+    }
+
+    public static String getTableUsersTelefoon() {
+        return TABLE_USERS_TELEFOON;
+    }
+
+    public static String getTableUsersEmail() {
+        return TABLE_USERS_EMAIL;
+    }
+
+    public static String getTableUsersUsername() {
+        return TABLE_USERS_USERNAME;
+    }
+
+    public static String getTableUsersPassword() {
+        return TABLE_USERS_PASSWORD;
+    }
+
+    public static String getTableUsersLevel() {
+        return TABLE_USERS_LEVEL;
+    }
+
+    public static String getTableTicketsName() {
+        return TABLE_TICKETS_NAME;
+    }
+
+    public static String getTableTicketsId() {
+        return TABLE_TICKETS_ID;
+    }
+
+    public static String getTableTicketsCreationDate() {
+        return TABLE_TICKETS_CREATION_DATE;
+    }
+
+    public static String getTableTicketsTypeProbleem() {
+        return TABLE_TICKETS_TYPE_PROBLEEM;
+    }
+
+    public static String getTableTicketsTitle() {
+        return TABLE_TICKETS_TITLE;
+    }
+
+    public static String getTableTicketsDescription() {
+        return TABLE_TICKETS_DESCRIPTION;
+    }
+
+    public static String getTableTicketsReparatieDatum() {
+        return TABLE_TICKETS_REPARATIE_DATUM;
+    }
+
+    public static String getTableTicketsStatus() {
+        return TABLE_TICKETS_STATUS;
+    }
+
+    public static String getTableUserticketsName() {
+        return TABLE_USERTICKETS_NAME;
+    }
+
+    public static String getTableUserticketsId() {
+        return TABLE_USERTICKETS_ID;
+    }
+
+    public static String getTableUserticketsUid() {
+        return TABLE_USERTICKETS_UID;
+    }
+
+    public static String getTableUserticketsTid() {
+        return TABLE_USERTICKETS_TID;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE_USERS);
@@ -75,7 +172,6 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
 
     private void insertDefaultData() {
 
@@ -119,7 +215,6 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
 
     }
 
-
     public long insertUser(String name, ContentValues user) {
         SQLiteDatabase db = getWritableDatabase();
         long rowId = db.insert(TABLE_USERS_NAME, null, user);
@@ -144,12 +239,49 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         return user;
     }
 
+    public User findUserByPhoneNumber(String phoneNumber) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        String whereClause = String.format("%s = ?", TABLE_USERS_TELEFOON);
+        String[] whereArgs = {phoneNumber};
+        cursor = db.query(TABLE_USERS_NAME, new String[]{"user_id", "fnaam", "vnaam", "username", "password", "user_level"}, whereClause, whereArgs, null, null, null);
+
+        User user = null;
+        if (cursor.moveToNext()) {
+            user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getInt(5));
+        }
+
+        db.close();
+        return user;
+    }
+
     public long insertTicket(ContentValues ticket) {
         SQLiteDatabase db = getWritableDatabase();
         long rowId = db.insert(TABLE_TICKETS_NAME, null, ticket);
         db.close();
         //return the row ID of the newly inserted row, or -1 if an error occurred
         return rowId;
+    }
+
+    public Cursor cursorFindTickets(int user_id, int user_level) {
+        ArrayList<Ticket> tickets = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+
+        String sql = "";
+        sql += "select tickets.title, tickets.status from user_tickets ";
+        sql += "join tickets on user_tickets.ticket_id = tickets.ticket_id";
+        if (user_level != 1) {
+            sql += " where user_id = ?";
+            cursor = db.rawQuery(sql, new String[]{String.valueOf(user_id)});
+        } else {
+            cursor = db.rawQuery(sql, null);
+        }
+
+        db.close();
+
+        return cursor;
     }
 
     public ArrayList<Ticket> findTickets(int user_id, int user_level) {
@@ -187,5 +319,4 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         //return the row ID of the newly inserted row, or -1 if an error occurred
         return rowId;
     }
-
 }

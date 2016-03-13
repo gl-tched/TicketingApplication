@@ -21,10 +21,7 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{" +
-                "title='" + title + '\'' + "\n" +
-                "status='" + status + '\'' +
-                '}';
+        return title + "\n" + "Status: " + status;
     }
 
     public int getTicket_id() {
