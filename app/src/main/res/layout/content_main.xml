@@ -19,34 +19,44 @@
         android:scaleType="fitCenter"
         android:src="@drawable/logo" />
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_usrLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView">
     <EditText
         android:id="@+id/usernameField"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imageView"
         android:layout_alignStart="@+id/imageView"
-        android:layout_below="@+id/imageView"
         android:layout_marginTop="29dp"
         android:gravity="center"
         android:hint="username" />
+    </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_pswLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_usrLogin">
     <EditText
         android:id="@+id/passwordField"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/usernameField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp"
         android:ems="10"
         android:gravity="center"
         android:hint="password"
         android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordField"
+        android:layout_below="@+id/input_layout_pswLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
         android:backgroundTint="#52a2ba"

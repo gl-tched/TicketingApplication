@@ -96,7 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
             userValues.put(DatabaseDAO.getTableUsersPassword(), User.getPasswordHash(sPassword));
             userValues.put(DatabaseDAO.getTableUsersLevel(), DatabaseDAO.getUserLevel());
 
-            long rowId = db.insertUser(DatabaseDAO.getTableUsersName(), userValues);
+            long rowId = db.insertUser(userValues);
             if (rowId != -1) {
                 Intent intent = new Intent(this, DashboardActivity.class);
                 User user = db.findUserCreds(sUsername);

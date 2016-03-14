@@ -43,11 +43,11 @@ public class TicketDetailsActivity extends AppCompatActivity {
         //Toast.makeText(this, "You reached ticket details", Toast.LENGTH_SHORT).show();
 
         Bundle extras = getIntent().getExtras();
-        String message = "";
-        message += "listitem pos: " + extras.getInt("listitem pos") + "\n";
-        message += "adapteritem pos:" + extras.getInt("adapteritem pos");
+        //String message = "";
+        //message += "listitem pos: " + extras.getInt("listitem pos") + "\n";
+        //message += "adapteritem pos:" + extras.getInt("adapteritem pos");
 
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
         int ticketId = extras.getInt("ticket_id");
         DatabaseDAO db = new DatabaseDAO(this);
@@ -74,12 +74,10 @@ public class TicketDetailsActivity extends AppCompatActivity {
             description.setText(ticket.getDescription());
             type.setSelection(typeHM.get(ticket.getType_probleem()));
             status.setSelection(statusHM.get(ticket.getStatus()));
-//            type.setText(ticket.getType_probleem());
-//            status.setText(ticket.getStatus());
             repdate.setText(ticket.getReparatie_datum());
         }
 
-        if (extras.getInt("user_level") == 2) {
+        if (DashboardActivity.getUserLevel() == 2) {
             disableEditText(title);
             disableEditText(description);
 //            disableEditText(type);

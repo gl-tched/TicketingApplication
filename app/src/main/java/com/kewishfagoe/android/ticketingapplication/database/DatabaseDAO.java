@@ -43,26 +43,8 @@ public class DatabaseDAO extends SQLiteOpenHelper {
     private static final String TABLE_USERTICKETS_UID = "user_id";
     private static final String TABLE_USERTICKETS_TID = "ticket_id";
 
-
-//Create Table users Script
-private static final String SQL_CREATE_TABLE_USERS = String.format(
-        "create table if not exists %s(%s INTEGER NOT NULL CHECK(user_id > 0), %s NUMERIC NOT NULL , %s TEXT NOT NULL UNIQUE, %s TEXT NOT NULL UNIQUE, %s TEXT NOT NULL UNIQUE, %s NUMERIC NOT NULL UNIQUE, %s TEXT NOT NULL, %s TEXT NOT NULL UNIQUE, %s TEXT NOT NULL, %s INTEGER NOT NULL CHECK(user_level = 1 OR user_level = 2),PRIMARY KEY(user_id));",
-        TABLE_USERS_NAME, TABLE_USERS_ID, TABLE_USERS_REG_DATE, TABLE_USERS_FNAAM, TABLE_USERS_VNAAM, TABLE_USERS_ADRES, TABLE_USERS_TELEFOON, TABLE_USERS_EMAIL, TABLE_USERS_USERNAME, TABLE_USERS_PASSWORD, TABLE_USERS_LEVEL);
-
-//Create  Table tickets
-private static final String SQL_CREATE_TABLE_TICKETS = String.format(
-        "create table if not exists %s(%s INTEGER NOT NULL CHECK(ticket_id > 0), %s NUMERIC NOT NULL , %s TEXT CHECK(type_probleem = 'SOFTWARE' OR type_probleem = 'HARDWARE'), %s TEXT, %s TEXT NOT NULL, %s NUMERIC, %s TEXT NOT NULL CHECK(status = 'OPEN' OR status = 'IN PROGRESS' OR status = 'CLOSED'),PRIMARY KEY(ticket_id));",
-        TABLE_TICKETS_NAME, TABLE_TICKETS_ID, TABLE_TICKETS_CREATION_DATE, TABLE_TICKETS_TYPE_PROBLEEM, TABLE_TICKETS_TITLE, TABLE_TICKETS_DESCRIPTION, TABLE_TICKETS_REPARATIE_DATUM, TABLE_TICKETS_STATUS);
-
-//Create Table user_tickets
-private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
-        "create table if not exists %s(%s INTEGER NOT NULL CHECK(user_tickets_id > 0), %s INTEGER NOT NULL , %s INTEGER NOT NULL, PRIMARY KEY(user_tickets_id), FOREIGN KEY(user_id) REFERENCES users(user_id), FOREIGN KEY(ticket_id) REFERENCES tickets(ticket_id));",
-        TABLE_USERTICKETS_NAME, TABLE_USERTICKETS_ID, TABLE_USERTICKETS_UID, TABLE_USERTICKETS_TID);
-
-
     public DatabaseDAO(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        insertDefaultData();
     }
 
     public static int getUserLevel() {
@@ -145,27 +127,25 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         return TABLE_TICKETS_STATUS;
     }
 
-    public static String getTableUserticketsName() {
+    public static String getTableUserTicketsName() {
         return TABLE_USERTICKETS_NAME;
     }
 
-    public static String getTableUserticketsId() {
+    public static String getTableUserTicketsId() {
         return TABLE_USERTICKETS_ID;
     }
 
-    public static String getTableUserticketsUid() {
+    public static String getTableUserTicketsUid() {
         return TABLE_USERTICKETS_UID;
     }
 
-    public static String getTableUserticketsTid() {
+    public static String getTableUserTicketsTid() {
         return TABLE_USERTICKETS_TID;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLE_USERS);
-        db.execSQL(SQL_CREATE_TABLE_TICKETS);
-        db.execSQL(SQL_CREATE_TABLE_USERTICKETS);
+        SQLiteScript.prepareDatabase(db);
     }
 
     @Override
@@ -173,49 +153,7 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
 
     }
 
-    private void insertDefaultData() {
-
-        ContentValues userValues1 = new ContentValues();
-        userValues1.put(TABLE_USERS_REG_DATE, "2015 - 01 - 18");
-        userValues1.put(TABLE_USERS_FNAAM, "Bollinger");
-        userValues1.put(TABLE_USERS_VNAAM, "Joyce");
-        userValues1.put(TABLE_USERS_ADRES, "Windmolen 181");
-        userValues1.put(TABLE_USERS_TELEFOON, 8693447);
-        userValues1.put(TABLE_USERS_EMAIL, "JoyceJBollinger@inbound.plus");
-        userValues1.put(TABLE_USERS_USERNAME, "joyce");
-        userValues1.put(TABLE_USERS_PASSWORD, "5dafa4f662d29c5f870ba55a880dc5089226721f183543cdfaec0c21ccd8d63c");
-        userValues1.put(TABLE_USERS_LEVEL, 2);
-        insertUser(TABLE_USERS_NAME, userValues1);
-
-        ContentValues userAdminValues = new ContentValues();
-        userAdminValues.put(TABLE_USERS_REG_DATE, "2015 - 01 - 18");
-        userAdminValues.put(TABLE_USERS_FNAAM, "Super");
-        userAdminValues.put(TABLE_USERS_VNAAM, "Admin");
-        userAdminValues.put(TABLE_USERS_ADRES, "Column St. 123");
-        userAdminValues.put(TABLE_USERS_TELEFOON, 8932618);
-        userAdminValues.put(TABLE_USERS_EMAIL, "AdminSuper@inbound.plus");
-        userAdminValues.put(TABLE_USERS_USERNAME, "sadmin");
-        userAdminValues.put(TABLE_USERS_PASSWORD, "9f5ba68f21489544d985797d58847b65e9a22c4981aeccafc96b351e84df254c");
-        userAdminValues.put(TABLE_USERS_LEVEL, 1);
-        insertUser(TABLE_USERS_NAME, userAdminValues);
-
-        ContentValues ticketValues1 = new ContentValues();
-        ticketValues1.put(TABLE_TICKETS_CREATION_DATE, "2015 - 01 - 18");
-        ticketValues1.put(TABLE_TICKETS_TYPE_PROBLEEM, "SOFTWARE");
-        ticketValues1.put(TABLE_TICKETS_TITLE, "MS Word Probleem");
-        ticketValues1.put(TABLE_TICKETS_DESCRIPTION, "MS Word gaat niet open. Geeft x50326 error bij opstart.");
-        ticketValues1.put(TABLE_TICKETS_REPARATIE_DATUM, "2015 - 01 - 22");
-        ticketValues1.put(TABLE_TICKETS_STATUS, "CLOSED");
-        insertTicket(ticketValues1);
-
-        ContentValues userTicketValues1 = new ContentValues();
-        userTicketValues1.put(TABLE_USERTICKETS_TID, 1);
-        userTicketValues1.put(TABLE_USERTICKETS_UID, 1);
-        insertUserTicket(TABLE_USERTICKETS_NAME, userTicketValues1);
-
-    }
-
-    public long insertUser(String name, ContentValues user) {
+    public long insertUser(ContentValues user) {
         SQLiteDatabase db = getWritableDatabase();
         long rowId = db.insert(TABLE_USERS_NAME, null, user);
         db.close();
@@ -255,12 +193,12 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         return user;
     }
 
-    public int updateTicket(ContentValues contentValues, int ticket_id) {
+    public int updateTicket(ContentValues ticket, int ticket_id) {
         int affectedRows = 0;
         SQLiteDatabase db = getWritableDatabase();
         String whereClause = String.format("%s = ?", TABLE_TICKETS_ID);
         String[] whereArgs = {String.valueOf(ticket_id)};
-        affectedRows = db.update(TABLE_TICKETS_NAME, contentValues, whereClause, whereArgs);
+        affectedRows = db.update(TABLE_TICKETS_NAME, ticket, whereClause, whereArgs);
 
         return affectedRows;
     }
@@ -280,12 +218,13 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         Cursor cursor = null;
 
         String sql = "";
-        sql += "select tickets.title, tickets.status from user_tickets ";
-        sql += "join tickets on user_tickets.ticket_id = tickets.ticket_id";
         if (user_level != 1) {
-            sql += " where user_id = ?";
+            sql += "select tickets.title, tickets.status from user_tickets ";
+            sql += "join tickets on user_tickets.ticket_id = tickets.ticket_id ";
+            sql += "where user_id = ?";
             cursor = db.rawQuery(sql, new String[]{String.valueOf(user_id)});
         } else {
+            sql += "select ticket_id, title, status from tickets";
             cursor = db.rawQuery(sql, null);
         }
 
@@ -301,12 +240,13 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         Cursor cursor = null;
 
         String sql = "";
-        sql += "select tickets.ticket_id, tickets.title, tickets.status from user_tickets ";
-        sql += "join tickets on user_tickets.ticket_id = tickets.ticket_id";
         if (user_level != 1) {
-            sql += " where user_id = ?";
+            sql += "select tickets.ticket_id, tickets.title, tickets.status from user_tickets ";
+            sql += "join tickets on user_tickets.ticket_id = tickets.ticket_id ";
+            sql += "where user_id = ?";
             cursor = db.rawQuery(sql, new String[]{String.valueOf(user_id)});
         } else {
+            sql += "select ticket_id, title, status from tickets";
             cursor = db.rawQuery(sql, null);
         }
 
@@ -343,7 +283,28 @@ private static final String SQL_CREATE_TABLE_USERTICKETS = String.format(
         return ticket;
     }
 
-    public long insertUserTicket(String name, ContentValues userTicket) {
+    public Ticket findTicketByRowID(long rowId) {
+        ArrayList<Ticket> tickets = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+
+        String sql = "";
+        sql += "select * from tickets";
+        sql += " where rowid = ?";
+        cursor = db.rawQuery(sql, new String[]{String.valueOf(rowId)});
+
+        Ticket ticket = null;
+        if (cursor.moveToNext()) {
+            ticket = new Ticket(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+        }
+
+        db.close();
+
+        return ticket;
+    }
+
+    public long insertUserTicket(ContentValues userTicket) {
         SQLiteDatabase db = getWritableDatabase();
         long rowId = db.insert(TABLE_USERTICKETS_NAME, null, userTicket);
         db.close();

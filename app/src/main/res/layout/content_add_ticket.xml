@@ -12,36 +12,47 @@
     tools:context="com.kewishfagoe.android.ticketingapplication.AddTicketActivity"
     tools:showIn="@layout/activity_add_ticket">
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_titleField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
+        android:id="@+id/newTitleField"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/titleField"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="71dp"
-        android:hint="Title"
-        android:gravity="center" />
+        android:gravity="center"
+        android:hint="Title" />
+    </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_descriptionField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_titleField">
     <EditText
+        android:id="@+id/newDescriptionField"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/descriptionField"
-        android:layout_below="@+id/titleField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:ems="10"
+        android:gravity="center"
         android:hint="Problem Description"
-        android:gravity="center" />
+        android:inputType="textMultiLine" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
+        android:id="@+id/saveTicketButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SAVE"
-        android:id="@+id/saveTicketButton"
-        android:layout_marginTop="89dp"
-        android:layout_below="@+id/descriptionField"
+        android:layout_below="@+id/input_layout_descriptionField"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="89dp"
         android:backgroundTint="@color/colorPrimary"
+        android:onClick="attemptTicketInsert"
+        android:text="SAVE"
         android:textColor="#FFF"/>
 </RelativeLayout>
