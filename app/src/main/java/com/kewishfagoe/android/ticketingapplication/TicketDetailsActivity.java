@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -58,6 +59,8 @@ public class TicketDetailsActivity extends AppCompatActivity {
         this.type = (Spinner) findViewById(R.id.typeDropDown);
         this.status = (Spinner) findViewById(R.id.statusDropDown);
         this.repdate = (EditText) findViewById(R.id.ticketRepDate);
+        Button updateBtn = (Button) findViewById(R.id.ticketUpdateButton);
+
 
         HashMap<String, Integer> typeHM = new HashMap<>();
         typeHM.put("HARDWARE", 0);
@@ -77,21 +80,28 @@ public class TicketDetailsActivity extends AppCompatActivity {
             repdate.setText(ticket.getReparatie_datum());
         }
 
+        // Disable update functionality for non-admin users
         if (DashboardActivity.getUserLevel() == 2) {
             disableEditText(title);
             disableEditText(description);
-//            disableEditText(type);
-//            disableEditText(status);
+            disableSpinner(type);
+            disableSpinner(status);
             disableEditText(repdate);
+            updateBtn.setVisibility(View.GONE);
         }
     }
 
-    public void disableEditText(EditText fld) {
-        fld.setFocusable(true);
-        fld.setEnabled(true);
-        fld.setCursorVisible(true);
+    private void disableEditText(EditText fld) {
+        fld.setFocusable(false);
+        fld.setCursorVisible(false);
         fld.setKeyListener(null);
         fld.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    private void disableSpinner(Spinner sp) {
+        sp.setClickable(false);
+        sp.setFocusable(false);
+        sp.setBackground(null);
     }
 
     public void attemptTicketUpdate(View view) {
