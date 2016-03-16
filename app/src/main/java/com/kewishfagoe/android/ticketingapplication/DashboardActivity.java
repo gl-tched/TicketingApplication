@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -81,6 +83,28 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.logoutUserDashboard) {
+            logoutUserD();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         if (!isListPopulated) {
@@ -132,5 +156,12 @@ public class DashboardActivity extends AppCompatActivity {
     private void addTicket() {
         Intent intent = new Intent(this, AddTicketActivity.class);
         startActivity(intent);
+    }
+
+    public void logoutUserD() {
+        Intent loginscreen = new Intent(this, MainActivity.class);
+        loginscreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(loginscreen);
+        this.finish();
     }
 }

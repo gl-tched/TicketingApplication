@@ -91,6 +91,28 @@ public class TicketDetailsActivity extends AppCompatActivity {
         }
     }
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_ticketdetails, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.logoutUserTDetails) {
+//            logoutUserTD();
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
     private void disableEditText(EditText fld) {
         fld.setFocusable(false);
         fld.setCursorVisible(false);
@@ -119,4 +141,9 @@ public class TicketDetailsActivity extends AppCompatActivity {
             Toast.makeText(this, "Ticket has been updated", Toast.LENGTH_SHORT).show();
         }
     }
+
+//    public void logoutUserTD() {
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//    }
 }
