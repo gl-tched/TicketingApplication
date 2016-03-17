@@ -28,8 +28,16 @@ public class DashboardActivity extends AppCompatActivity {
         return userId;
     }
 
+    public static void setUserId(int userId) {
+        DashboardActivity.userId = userId;
+    }
+
     public static int getUserLevel() {
         return userLevel;
+    }
+
+    public static void setUserLevel(int userLevel) {
+        DashboardActivity.userLevel = userLevel;
     }
 
     @Override
@@ -48,19 +56,19 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        Bundle extras = getIntent().getExtras();
-        String message = "";
-        message += "user_id: " + extras.getInt("user_id") + "\n";
-        message += "f_naam: " + extras.getString("f_naam") + "\n";
-        message += "v_naam:" + extras.getString("v_naam") + "\n";
-        message += "usr:" + extras.getString("username") + "\n";
-        message += "psw:" + extras.getString("password") + "\n";
-        message += "user_level:" + extras.getInt("user_level");
+        //Bundle extras = getIntent().getExtras();
+        //String message = "";
+        //message += "user_id: " + extras.getInt("user_id") + "\n";
+        //message += "f_naam: " + extras.getString("f_naam") + "\n";
+        //message += "v_naam:" + extras.getString("v_naam") + "\n";
+        //message += "usr:" + extras.getString("username") + "\n";
+        //message += "psw:" + extras.getString("password") + "\n";
+        //message += "user_level:" + extras.getInt("user_level");
 
         //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
-        userId = extras.getInt("user_id");
-        userLevel = extras.getInt("user_level");
+        //userId = extras.getInt("user_id");
+        //userLevel = extras.getInt("user_level");
         HashMap<String, Object> result = populateTicketList(userId, userLevel);
 
         if (result != null) {

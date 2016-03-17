@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -73,14 +73,15 @@ public class MainActivity extends AppCompatActivity {
                 // login success
                 // transition to dashboard
                 // Toast.makeText(this, "Login success", Toast.LENGTH_SHORT).show();
-
+                DashboardActivity.setUserId(user.getUser_id());
+                DashboardActivity.setUserLevel(user.getUserLevel());
                 Intent intent = new Intent(this, DashboardActivity.class);
-                intent.putExtra("user_id", user.getUser_id());
-                intent.putExtra("f_naam", user.getF_naam());
-                intent.putExtra("v_naam", user.getV_naam());
-                intent.putExtra("username", user.getUsername());
-                intent.putExtra("password", user.getPassword());
-                intent.putExtra("user_level", user.getUserLevel());
+                //intent.putExtra("user_id", user.getUser_id());
+                //intent.putExtra("f_naam", user.getF_naam());
+                //intent.putExtra("v_naam", user.getV_naam());
+                //intent.putExtra("username", user.getUsername());
+                //intent.putExtra("password", user.getPassword());
+                //intent.putExtra("user_level", user.getUserLevel());
                 startActivity(intent);
             } else {
                 // login failed

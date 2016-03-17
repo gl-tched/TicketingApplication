@@ -1,8 +1,16 @@
 package com.kewishfagoe.android.ticketingapplication;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -61,7 +69,6 @@ public class TicketDetailsActivity extends AppCompatActivity {
         this.repdate = (EditText) findViewById(R.id.ticketRepDate);
         Button updateBtn = (Button) findViewById(R.id.ticketUpdateButton);
 
-
         HashMap<String, Integer> typeHM = new HashMap<>();
         typeHM.put("HARDWARE", 0);
         typeHM.put("SOFTWARE", 1);
@@ -80,8 +87,16 @@ public class TicketDetailsActivity extends AppCompatActivity {
             repdate.setText(ticket.getReparatie_datum());
         }
 
+        int userLevel;
+        try {
+            userLevel = extras.getInt("user_level");
+            if (DashboardActivity.getUserLevel() == 1) userLevel = 1;
+        } catch (NullPointerException e) {
+            userLevel = DashboardActivity.getUserLevel();
+        }
+
         // Disable update functionality for non-admin users
-        if (DashboardActivity.getUserLevel() == 2) {
+        if (userLevel == 2) {
             disableEditText(title);
             disableEditText(description);
             disableSpinner(type);
@@ -126,6 +141,43 @@ public class TicketDetailsActivity extends AppCompatActivity {
         sp.setBackground(null);
     }
 
+    private void setNotification() {
+        int id = 1;
+
+        Intent resultIntent = new Intent(this, TicketDetailsActivity.class);
+        resultIntent.putExtra("ticket_id", ticket.getTicket_id());
+        resultIntent.putExtra("user_level", 2);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack
+        stackBuilder.addParentStack(TicketDetailsActivity.class);
+        // Adds the Intent to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        // Gets a PendingIntent containing the entire back stack
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentIntent(resultPendingIntent);
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable.ic_stat_logo);
+        builder.setContentTitle("Ticket updated");
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        builder.setLargeIcon(bitmap);
+
+        StringBuilder sbContent = new StringBuilder();
+        sbContent.append("Title: ");
+        sbContent.append(title.getText());
+        builder.setContentText(sbContent);
+
+        StringBuilder sbSub = new StringBuilder();
+        sbSub.append("Status: ");
+        sbSub.append(status.getSelectedItem());
+        builder.setSubText(sbSub);
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(id, builder.build());
+    }
+
     public void attemptTicketUpdate(View view) {
         ContentValues ticketValues = new ContentValues();
         ticketValues.put(DatabaseDAO.getTableTicketsTypeProbleem(), type.getSelectedItem().toString());
@@ -139,6 +191,7 @@ public class TicketDetailsActivity extends AppCompatActivity {
 
         if (affectedRows > 0) {
             Toast.makeText(this, "Ticket has been updated", Toast.LENGTH_SHORT).show();
+            setNotification();
         }
     }
 

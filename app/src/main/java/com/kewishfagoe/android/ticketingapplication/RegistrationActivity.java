@@ -35,6 +35,27 @@ public class RegistrationActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
+        DatabaseDAO db = new DatabaseDAO(this);
+        User userByUsername = db.findUserCreds("ticked");
+
+        if (userByUsername == null) {
+            EditText lastName = (EditText) findViewById(R.id.lastNameField);
+            EditText firstName = (EditText) findViewById(R.id.firstNameField);
+            EditText phoneNumber = (EditText) findViewById(R.id.phoneNumberField);
+            EditText address = (EditText) findViewById(R.id.addressField);
+            EditText emailAddress = (EditText) findViewById(R.id.emailField);
+            EditText username = (EditText) findViewById(R.id.regUserNameField);
+            EditText password = (EditText) findViewById(R.id.regPasswordField);
+
+            lastName.setText("Tick");
+            firstName.setText("Ed");
+            address.setText("Sosoprobleemstraat 404");
+            phoneNumber.setText(String.valueOf(429431));
+            emailAddress.setText("tick.ed@notfound.me");
+            username.setText("ticked");
+            password.setText("ticked404");
+        }
     }
 
 
@@ -100,6 +121,9 @@ public class RegistrationActivity extends AppCompatActivity {
             if (rowId != -1) {
                 Intent intent = new Intent(this, DashboardActivity.class);
                 User user = db.findUserCreds(sUsername);
+                DashboardActivity.setUserId(user.getUser_id());
+                DashboardActivity.setUserLevel(user.getUserLevel());
+
                 intent.putExtra("user_id", user.getUser_id());
                 intent.putExtra("f_naam", user.getF_naam());
                 intent.putExtra("v_naam", user.getV_naam());
